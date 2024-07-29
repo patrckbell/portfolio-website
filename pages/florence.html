@@ -48,10 +48,12 @@
         <div id="threejs-container"></div>
     </div>
     <div id="meatandpotatoes">
+        <div id="photostack">
         <img src="../florence1.jpg" class="scroll-image" id="photo1">
         <img src="../florence2.JPG" class="scroll-image" id="photo2">
         <img src="../florence3.PNG" class="scroll-image" id="photo3">
         <img src="../florence4.jpeg" class="scroll-image" id="photo4">
+        </div>
         <div id="yaps">
 Working on Project Florence this year with the ARES Rocketry Team has been a whirlwind of learning, innovation, and camaraderie. As a member of the flight simulations subteam, I had the opportunity to dive into various problems, working closely with an amazing group of people. Our primary goal was to ensure the rocket's trajectory was optimized and precise, a task that required extensive use of tools like OpenRocket, RasAero, and RocketPy. Each tool offered different levels of effectiveness and complexity, with RocketPy ultimately proving to be the most powerful for our needs.
 
@@ -264,34 +266,18 @@ p {
     color: white;
     background-color: black;
 }
-#photo1 { 
-    grid-column: 1;
-    position:absolute;
-    top: 20%;
-    width: 20%;
-    height: 20%;
+
+#photostack{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
 }
-#photo2 { 
-    grid-column: 1;
-    position:absolute;
-    top: 40%;
-    width: 20%;
-    height: 20%;
+#photo1{
+    display: flex;
+    grid-row: 1;
 }
-#photo3 { 
-    grid-column: 1;
-    position:absolute;
-    top: 60%;
-    width: 20%;
-    height: 20%;
-}
-#photo4 { 
-    grid-column: 1;
-    position:absolute;
-    top: 80%;
-    width: 20%;
-    height: 20%;
-}
+
 #yaps {
     grid-column: 2;
     font-family: 'General Sans', sans-serif;
