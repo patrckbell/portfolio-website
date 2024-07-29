@@ -1,3 +1,9 @@
+window.addEventListener('load', () => {
+    // Hide the placeholder and show the content
+    document.querySelector('.placeholder').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // Set up scene, camera, and renderer
     const loader = new THREE.CubeTextureLoader();
