@@ -80,6 +80,12 @@
     </div>
     <div id="meatandpotatoes">
         <div id="yaps">
+            <div class="left-images">
+                <img src="image1.png" alt="Image 1">
+                <img src="image2.png" alt="Image 2">
+                <img src="image3.png" alt="Image 3">
+                <img src="image4.png" alt="Image 4">
+            </div>
 Working on Project Florence this year with the ARES Rocketry Team has been a whirlwind of learning, innovation, and camaraderie. As a member of the flight simulations subteam, I had the opportunity to dive into various problems, working closely with an amazing group of people. Our primary goal was to ensure the rocket's trajectory was optimized and precise, a task that required extensive use of tools like OpenRocket, RasAero, and RocketPy. Each tool offered different levels of effectiveness and complexity, with RocketPy ultimately proving to be the most powerful for our needs.
 
 <br></br>
@@ -326,6 +332,29 @@ footer{
 .scroll-image{
     height: 1%;
     grid-column: 1;
+}
+
+.left-images {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 60px; /* Adjust width as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.left-images img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px; /* Adjust spacing between images */
+}
+
+.left-images img:last-child {
+    margin-bottom: 0; /* Remove margin from the last image */
 }
 
 </style>
