@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up scene, camera, and renderer
     const loader = new THREE.CubeTextureLoader();
     const texture = loader.load([
-    './zpos.png',  // right
-    './zpos.png',  // right
-    './zpos.png',  // right
-    './zpos.png',  // right
-    './zpos.png',  // right
-    './zpos.png',  // right
+    '../zpos.png',  // right
+    '../zpos.png',  // right
+    '../zpos.png',  // right
+    '../zpos.png',  // right
+    '../zpos.png',  // right
+    '../zpos.png',  // right
     ]);
 
     const scene = new THREE.Scene();
