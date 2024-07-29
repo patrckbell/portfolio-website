@@ -11,6 +11,13 @@
     <div class="gif-overlay">
         <img id="vig" src="/vignette.png">
     </div>
+
+    <div id="backarrow">
+        <a href="/index.html">
+            <img src="/back.png">
+        </a>
+    </div>
+
     <div id="container">
         <div id="info">
             <h1>PROJECT NAME</h1>
@@ -232,9 +239,28 @@ p {
     padding: 100px;
 }
 footer{
-    padding: 60px;
+    padding: 80px;
     display: block;
     background-color: white;
+}
+#backarrow{
+  z-index: 1000;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 50px;
+  transition: 0.2s;
+}
+#backarrow:hover{
+  transition: 0.2s;
+  opacity: 0.7;
+}
+
+#backarrow img{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 50px;
 }
 
 </style>

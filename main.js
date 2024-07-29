@@ -152,8 +152,8 @@ function onDocumentMouseClick(event) {
 
     if (intersects.length > 0) {
         selectedSphere = intersects[0].object;
-        if(selectedSphere){
-            deepness+=1;
+        if (selectedSphere) {
+            deepness += 1;
             currentSphereIndex = spheres.indexOf(selectedSphere);
             const sphereData = selectedSphere.userData;
 
@@ -178,68 +178,83 @@ function onDocumentMouseClick(event) {
             back.classList.add('show');
             infoElement.style.display = 'block';
             console.log(sphereInfo.name.includes("About"));
-            if(sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")){
+
+            if (sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")) {
                 infoElement.innerHTML = `
                 <h2>${sphereInfo.name}</h2>
                 <p>${sphereInfo.info}</p>
                 <div id="buttonbox"></div>
                 <button id="prevBtn">Previous</button>
                 <button id="nextBtn">Next</button>
-                <button id="moreBtn" class="${sphereInfo.name}">See More</button>`;
-            }
-            else if (sphereInfo.name.includes("Competitions")){
+                <button class="moreBtn ${sphereInfo.name.toLowerCase()}">See More</button>`;
+            } else if (sphereInfo.name.includes("Competitions")) {
                 infoElement.innerHTML = `
                 <h2>${sphereInfo.name}</h2>
                 <p>${sphereInfo.info}</p>
                 <div id="buttonbox"></div>
                 <button id="prevBtn">Previous</button>
                 <button id="nextBtn">Next</button>
-                <button id="moreBtn" class="sac">Spaceport America Cup</button>
-                <button id="moreBtn" class="citadel">Citadel Trading Invitational</button>
-                <button id="moreBtn" class="imc">IMC Prosperity</button>`;
-            }
-            else{
+                <button id="sac">Spaceport America Cup</button>
+                <button id="citadel">Citadel Trading Invitational</button>
+                <button id="imc">IMC Prosperity</button>`;
+                document.getElementById('sac').addEventListener('click', function() {
+                    window.location.href = '/posts/sac.html';
+                });
+                document.getElementById('citadel').addEventListener('click', function() {
+                    window.location.href = '/posts/tradinginv.html';
+                });
+                document.getElementById('imc').addEventListener('click', function() {
+                    window.location.href = '/posts/imcprosp.html';
+                });
+            } else {
                 infoElement.innerHTML = `
                 <h2>${sphereInfo.name}</h2>
                 <p>${sphereInfo.info}</p>
                 <div id="buttonbox"></div>
                 <button id="prevBtn">Previous</button>
                 <button id="nextBtn">Next</button>
-                <button id="moreBtn" class="subwai">Subw-AI</button>
-                <button id="moreBtn" class="mlbets">Algorithmic Sportsbetting</button>
+                <button id="subwai">Subw-AI</button>
+                <button id="mlbets">Algorithmic Sportsbetting</button>
                 <button id="florence">Florence</button>`;
+                document.getElementById('florence').addEventListener('click', function() {
+                    window.location.href = '/posts/florence.html';
+                });
+                document.getElementById('mlbets').addEventListener('click', function() {
+                    window.location.href = '/posts/mlbetting.html';
+                });
+                document.getElementById('subwai').addEventListener('click', function() {
+                    window.location.href = '/posts/subwai.html';
+                });
             }
 
             document.getElementById('prevBtn').addEventListener('click', showPreviousSphere);
             document.getElementById('nextBtn').addEventListener('click', showNextSphere);
-            document.getElementById('florence').addEventListener('click', function() {
-                console.log("Heyy");
-                window.location.href = '/posts/florence.html';
-            })
 
-            const moreBtn = document.getElementById('moreBtn');
-            moreBtn.addEventListener('click', function() {
-                if (moreBtn.classList.contains("About")) {
-                    about.classList.add('show');
-                    infoElement.style.display = 'none';
-                    deepness+=1;
-                }
-                if (moreBtn.classList.contains("Contact")) {
-                    socials.classList.add('show');
-                    infoElement.style.display = 'none';
-                    deepness+=1;
-                }
-                if (moreBtn.classList.contains("florence")) {
-                    
-                }
-                if (moreBtn.classList.contains("Competitions")) {
-                    window.location.href = 'competitons.html';
-                }
+            // Select all elements with the class 'moreBtn' and add event listeners
+            const moreBtns = document.querySelectorAll('.moreBtn');
+            moreBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log("hey");
+                    if (btn.classList.contains("about")) {
+                        about.classList.add('show');
+                        infoElement.style.display = 'none';
+                        deepness += 1;
+                    }
+                    if (btn.classList.contains("contact")) {
+                        socials.classList.add('show');
+                        infoElement.style.display = 'none';
+                        deepness += 1;
+                    }
+                    if (btn.classList.contains("competitions")) {
+                        window.location.href = 'competitions.html';
+                    }
+                    // Add more conditions for other buttons if needed
+                });
             });
-        
         }
     }
 }
+
 
 function goBack(event) {
     new TWEEN.Tween(camera.position)
@@ -345,59 +360,78 @@ function updateView() {
     back.classList.add('show');
     infoElement.style.display = 'block';
     console.log(sphereInfo.name.includes("About"));
-    if(sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")){
+
+    if (sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")) {
         infoElement.innerHTML = `
         <h2>${sphereInfo.name}</h2>
         <p>${sphereInfo.info}</p>
         <div id="buttonbox"></div>
         <button id="prevBtn">Previous</button>
         <button id="nextBtn">Next</button>
-        <button id="moreBtn" class="${sphereInfo.name}">See More</button>`;
-    }
-    else if (sphereInfo.name.includes("Competitions")){
+        <button class="moreBtn ${sphereInfo.name.toLowerCase()}">See More</button>`;
+    } else if (sphereInfo.name.includes("Competitions")) {
         infoElement.innerHTML = `
         <h2>${sphereInfo.name}</h2>
         <p>${sphereInfo.info}</p>
         <div id="buttonbox"></div>
         <button id="prevBtn">Previous</button>
         <button id="nextBtn">Next</button>
-        <button id="moreBtn" class="sac">Spaceport America Cup</button>
-        <button id="moreBtn" class="citadel">Citadel Trading Invitational</button>
-        <button id="moreBtn" class="imc">IMC Prosperity</button>`;
-    }
-    else{
+        <button id="sac">Spaceport America Cup</button>
+        <button id="citadel">Citadel Trading Invitational</button>
+        <button id="imc">IMC Prosperity</button>`;
+        document.getElementById('sac').addEventListener('click', function() {
+            window.location.href = '/posts/sac.html';
+        });
+        document.getElementById('citadel').addEventListener('click', function() {
+            window.location.href = '/posts/tradinginv.html';
+        });
+        document.getElementById('imc').addEventListener('click', function() {
+            window.location.href = '/posts/imcprosp.html';
+        });
+    } else {
         infoElement.innerHTML = `
         <h2>${sphereInfo.name}</h2>
         <p>${sphereInfo.info}</p>
         <div id="buttonbox"></div>
         <button id="prevBtn">Previous</button>
         <button id="nextBtn">Next</button>
-        <button id="moreBtn" class="subwai">Subw-AI</button>
-        <button id="moreBtn" class="mlbets">Algorithmic Sportsbetting</button>
-        <button id="moreBtn" class="florence">Florence</button>`;
+        <button id="subwai">Subw-AI</button>
+        <button id="mlbets">Algorithmic Sportsbetting</button>
+        <button id="florence">Florence</button>`;
+        document.getElementById('subwai').addEventListener('click', function() {
+            window.location.href = '/posts/florence.html';
+        });
+        document.getElementById('mlbets').addEventListener('click', function() {
+            window.location.href = '/posts/mlbetting.html';
+        });
+        document.getElementById('florence').addEventListener('click', function() {
+            window.location.href = '/posts/subwai.html';
+        });
     }
 
     document.getElementById('prevBtn').addEventListener('click', showPreviousSphere);
     document.getElementById('nextBtn').addEventListener('click', showNextSphere);
 
-    const moreBtn = document.getElementById('moreBtn');
-    moreBtn.addEventListener('click', function() {
-        if (moreBtn.classList.contains("About")) {
-            about.classList.add('show');
-            infoElement.style.display = 'none';
-            deepness+=1;
-        }
-        if (moreBtn.classList.contains("Contact")) {
-            socials.classList.add('show');
-            infoElement.style.display = 'none';
-            deepness+=1;
-        }
-        if (moreBtn.classList.includes("florence")) {
-            window.location.href = 'posts/florence.html';
-        }
-        if (moreBtn.classList.contains("Competitions")) {
-            window.location.href = 'competitons.html';
-        }
+    // Select all elements with the class 'moreBtn' and add event listeners
+    const moreBtns = document.querySelectorAll('.moreBtn');
+    moreBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            console.log("hey");
+            if (btn.classList.contains("about")) {
+                about.classList.add('show');
+                infoElement.style.display = 'none';
+                deepness += 1;
+            }
+            if (btn.classList.contains("contact")) {
+                socials.classList.add('show');
+                infoElement.style.display = 'none';
+                deepness += 1;
+            }
+            if (btn.classList.contains("competitions")) {
+                window.location.href = 'competitions.html';
+            }
+            // Add more conditions for other buttons if needed
+        });
     });
 
 }
