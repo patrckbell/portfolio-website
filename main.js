@@ -1,15 +1,23 @@
-import * as THREE from './three/src/Three.js';
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
-import TWEEN from './@tweenjs/tween.js/tween.esm.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import TWEEN from '@tweenjs/tween.js';
+
 
 let scene, camera, renderer, controls, effectComposer, customPass;
 let sphere1, sphere2, sphere3, sphere4, sphere5;
 let angle = 0;
 let mouseX = 0, mouseY = 0;
-let mouseOver1 = false, mouseOver2 = false, mouseOver4 = false, mouseOver5 = false;
+let mouseOver = false;
 let selectedSphere = null;
 const titleElement = document.getElementById('title');
 const infoElement = document.getElementById('info');
+const socials = document.getElementById('socialcontainer');
+const about = document.getElementById('about');
+const back = document.getElementById('backarrow');
+let rot = 0;
+let col = 0;
+let startscreen = true;
+let deepness = 0;
 
 const loader = new THREE.CubeTextureLoader();
 const texture = loader.load([
@@ -25,6 +33,10 @@ const spheres = [];
 let currentSphereIndex = -1;
 const sphereData = {};
 
+const colors = ["#0066ff", "#ff0000", "#ffb800", "#ff5c00"]
+
+let orbitLines = [];
+
 init();
 animate();
 
@@ -35,12 +47,13 @@ function init() {
 
     // Create the camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 40;
+    camera.position.z = 38;
 
     // Create the renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+    renderer.setPixelRatio(0.6);
 
     // Create geometry and material for the spheres
     const geometry = new THREE.SphereGeometry(1, 8, 8);
@@ -99,16 +112,29 @@ function init() {
         + "share more." };
     scene.add(sphere5);
     spheres.push(sphere5);
+    
+    const orbitRadius = 20;
 
     // Add OrbitControls
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableZoom = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.5;
 
     // Handle mouse events
     document.addEventListener('mousemove', onDocumentMouseMove, false);
     document.addEventListener('click', onDocumentMouseClick, false);
     document.addEventListener('keydown', onDocumentKeyDown, false);
     window.addEventListener('resize', onWindowResize, false);
+
+    document.getElementById('enterbtn').addEventListener('click', entersite);
+
+    createOrbitLines();
+}
+
+function entersite(){
+    document.getElementById('startscreen').classList.add("hide");
+    startscreen = false;
 }
 
 function onDocumentMouseMove(event) {
@@ -118,15 +144,16 @@ function onDocumentMouseMove(event) {
 }
 
 function onDocumentMouseClick(event) {
-    if (selectedSphere) return;
-
+    if (selectedSphere || startscreen) return;
+    back.addEventListener('click', goBack);
     const vector = new THREE.Vector3(mouseX, mouseY, 0.5).unproject(camera);
     const raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(spheres);
 
     if (intersects.length > 0) {
         selectedSphere = intersects[0].object;
-        if(selectedSphere != sphere3){
+        if(selectedSphere){
+            deepness+=1;
             currentSphereIndex = spheres.indexOf(selectedSphere);
             const sphereData = selectedSphere.userData;
 
@@ -148,30 +175,62 @@ function onDocumentMouseClick(event) {
             // Display the info box
             const sphereId = Object.keys(sphereData).find(id => sphereData[id] === selectedSphere.userData);
             const sphereInfo = sphereId ? sphereData[sphereId] : sphereData;
-
+            back.classList.add('show');
             infoElement.style.display = 'block';
-            infoElement.innerHTML = `
-            <h2>${sphereInfo.name}</h2>
-            <p>${sphereInfo.info}</p>
-            <button id="moreBtn" class="${sphereInfo.name}">See More</button>
-            <div id="buttonbox"></div>
-            <button id="prevBtn">Previous</button>
-            <button id="nextBtn">Next</button>
-            `;
-            
+            console.log(sphereInfo.name.includes("About"));
+            if(sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")){
+                infoElement.innerHTML = `
+                <h2>${sphereInfo.name}</h2>
+                <p>${sphereInfo.info}</p>
+                <div id="buttonbox"></div>
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="moreBtn" class="${sphereInfo.name}">See More</button>`;
+            }
+            else if (sphereInfo.name.includes("Competitions")){
+                infoElement.innerHTML = `
+                <h2>${sphereInfo.name}</h2>
+                <p>${sphereInfo.info}</p>
+                <div id="buttonbox"></div>
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="moreBtn" class="sac">Spaceport America Cup</button>
+                <button id="moreBtn" class="citadel">Citadel Trading Invitational</button>
+                <button id="moreBtn" class="imc">IMC Prosperity</button>`;
+            }
+            else{
+                infoElement.innerHTML = `
+                <h2>${sphereInfo.name}</h2>
+                <p>${sphereInfo.info}</p>
+                <div id="buttonbox"></div>
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="moreBtn" class="subwai">Subw-AI</button>
+                <button id="moreBtn" class="mlbets">Algorithmic Sportsbetting</button>
+                <button id="florence">Florence</button>`;
+            }
+
             document.getElementById('prevBtn').addEventListener('click', showPreviousSphere);
             document.getElementById('nextBtn').addEventListener('click', showNextSphere);
-            
+            document.getElementById('florence').addEventListener('click', function() {
+                console.log("Heyy");
+                window.location.href = '/posts/florence.html';
+            })
+
             const moreBtn = document.getElementById('moreBtn');
             moreBtn.addEventListener('click', function() {
                 if (moreBtn.classList.contains("About")) {
-                    window.location.href = 'about.html';
+                    about.classList.add('show');
+                    infoElement.style.display = 'none';
+                    deepness+=1;
                 }
                 if (moreBtn.classList.contains("Contact")) {
-                    window.location.href = 'contact.html';
+                    socials.classList.add('show');
+                    infoElement.style.display = 'none';
+                    deepness+=1;
                 }
-                if (moreBtn.classList.contains("Projects")) {
-                    window.location.href = 'projects.html';
+                if (moreBtn.classList.contains("florence")) {
+                    
                 }
                 if (moreBtn.classList.contains("Competitions")) {
                     window.location.href = 'competitons.html';
@@ -181,6 +240,39 @@ function onDocumentMouseClick(event) {
         }
     }
 }
+
+function goBack(event) {
+    new TWEEN.Tween(camera.position)
+        .to({ x: 0, y: 0, z: 50 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
+    new TWEEN.Tween(controls.target)
+        .to({ x: 0, y: 0, z: 0 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
+    controls.update();
+
+    // Hide the info box
+
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+    selectedSphere = null;
+    currentSphereIndex = -1;
+    deepness -= 1;
+    if (deepness > 1){
+        socials.classList.remove('show');
+        about.classList.remove('show');
+    }
+    else{
+        infoElement.style.display = 'none';
+        socials.classList.remove('show');
+        about.classList.remove('show');
+        back.classList.remove('show');
+        deepness = 0;
+    }
+}   
 
 function onDocumentKeyDown(event) {
     if (event.key === 'Escape' && selectedSphere) {
@@ -199,11 +291,16 @@ function onDocumentKeyDown(event) {
 
         // Hide the info box
         infoElement.style.display = 'none';
+        socials.classList.remove('show');
+        about.classList.remove('show');
+        back.classList.remove('show');
+
 
         document.addEventListener('mousemove', onDocumentMouseMove, false);
 
         selectedSphere = null;
         currentSphereIndex = -1;
+        deepness = 0;
     }
 }
 
@@ -230,7 +327,6 @@ function showPreviousSphere() {
 function updateView() {
     const sphereData = selectedSphere.userData;
 
-    // Animate zoom in on the selected sphere
     new TWEEN.Tween(camera.position)
         .to({ x: selectedSphere.position.x, y: selectedSphere.position.y, z: selectedSphere.position.z + 5 }, 1000)
         .easing(TWEEN.Easing.Quadratic.Out)
@@ -243,32 +339,61 @@ function updateView() {
 
     controls.update();
 
-    // Update the info box
+    // Display the info box
     const sphereId = Object.keys(sphereData).find(id => sphereData[id] === selectedSphere.userData);
     const sphereInfo = sphereId ? sphereData[sphereId] : sphereData;
+    back.classList.add('show');
+    infoElement.style.display = 'block';
+    console.log(sphereInfo.name.includes("About"));
+    if(sphereInfo.name.includes("About") || sphereInfo.name.includes("Contact")){
+        infoElement.innerHTML = `
+        <h2>${sphereInfo.name}</h2>
+        <p>${sphereInfo.info}</p>
+        <div id="buttonbox"></div>
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="moreBtn" class="${sphereInfo.name}">See More</button>`;
+    }
+    else if (sphereInfo.name.includes("Competitions")){
+        infoElement.innerHTML = `
+        <h2>${sphereInfo.name}</h2>
+        <p>${sphereInfo.info}</p>
+        <div id="buttonbox"></div>
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="moreBtn" class="sac">Spaceport America Cup</button>
+        <button id="moreBtn" class="citadel">Citadel Trading Invitational</button>
+        <button id="moreBtn" class="imc">IMC Prosperity</button>`;
+    }
+    else{
+        infoElement.innerHTML = `
+        <h2>${sphereInfo.name}</h2>
+        <p>${sphereInfo.info}</p>
+        <div id="buttonbox"></div>
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="moreBtn" class="subwai">Subw-AI</button>
+        <button id="moreBtn" class="mlbets">Algorithmic Sportsbetting</button>
+        <button id="moreBtn" class="florence">Florence</button>`;
+    }
 
-    infoElement.innerHTML = `
-    <h2>${sphereInfo.name}</h2>
-    <p>${sphereInfo.info}</p>
-    <button id="moreBtn" class="${sphereInfo.name}">See More</button>
-    <div id="buttonbox"></div>
-    <button id="prevBtn">Previous</button>
-    <button id="nextBtn">Next</button>
-    `;
-    
     document.getElementById('prevBtn').addEventListener('click', showPreviousSphere);
     document.getElementById('nextBtn').addEventListener('click', showNextSphere);
-    
+
     const moreBtn = document.getElementById('moreBtn');
     moreBtn.addEventListener('click', function() {
         if (moreBtn.classList.contains("About")) {
-            window.location.href = 'about.html';
+            about.classList.add('show');
+            infoElement.style.display = 'none';
+            deepness+=1;
         }
         if (moreBtn.classList.contains("Contact")) {
-            window.location.href = 'contact.html';
+            socials.classList.add('show');
+            infoElement.style.display = 'none';
+            deepness+=1;
         }
-        if (moreBtn.classList.contains("Projects")) {
-            window.location.href = 'projects.html';
+        if (moreBtn.classList.includes("florence")) {
+            window.location.href = 'posts/florence.html';
         }
         if (moreBtn.classList.contains("Competitions")) {
             window.location.href = 'competitons.html';
@@ -277,13 +402,128 @@ function updateView() {
 
 }
 
+function createCircularPaths(radius, segments, axisRotation) {
+    const points = [];
+    for (let i = 0; i <= segments; i++) {
+        const angle = (i / segments) * 2 * Math.PI;
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+        const z = 0;
+        points.push(new THREE.Vector3(x, y, z).applyAxisAngle(axisRotation.axis, axisRotation.angle));
+    }
+    return points;
+}
+
+function createDottedLine(points) {
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineDashedMaterial({
+        color: colors[col],
+        dashSize: 0.5,
+        gapSize: 0.5
+    });
+    col++;
+    const line = new THREE.Line(geometry, material);
+    line.computeLineDistances(); // Required for LineDashedMaterial
+    return line;
+}
+
+function updateSpheres(angle) {
+    const radius = 20;
+
+    function rotateX(x, y, z, theta) {
+        const cosTheta = Math.cos(theta);
+        const sinTheta = Math.sin(theta);
+        return {
+            x: x,
+            y: cosTheta * y - sinTheta * z,
+            z: sinTheta * y + cosTheta * z
+        };
+    }
+
+    function rotateY(x, y, z, theta) {
+        const cosTheta = Math.cos(theta);
+        const sinTheta = Math.sin(theta);
+        return {
+            x: cosTheta * x + sinTheta * z,
+            y: y,
+            z: -sinTheta * x + cosTheta * z
+        };
+    }
+
+    function rotateZ(x, y, z, theta) {
+        const cosTheta = Math.cos(theta);
+        const sinTheta = Math.sin(theta);
+        return {
+            x: cosTheta * x - sinTheta * y,
+            y: sinTheta * x + cosTheta * y,
+            z: z
+        };
+    }
+
+    // Sphere 1 (no rotation needed, basic orbit)
+    let pos1 = {
+        x: -radius * Math.cos(angle),
+        y: -radius * Math.sin(angle),
+        z: 0
+    };
+    sphere1.position.set(pos1.x, pos1.y, pos1.z);
+
+    // Sphere 2 (rotated around the x-axis)
+    let pos2 = {
+        x: radius * 0.85 * Math.cos(angle + Math.PI / 4),
+        y: -radius * 0.85 * Math.sin(angle + Math.PI / 4),
+        z: 0
+    };
+    pos2 = rotateZ(pos2.x, pos2.y, pos2.z, Math.PI / 4);
+    sphere2.position.set(pos2.x, pos2.y, pos2.z);
+
+    // Sphere 4 (rotated around the y-axis)
+    let pos4 = {
+        x: radius * 0.95 * Math.cos(angle + Math.PI / 2),
+        y: radius * 0.95 * Math.sin(angle + Math.PI / 2),
+        z: 0
+    };
+    pos4 = rotateY(pos4.x, pos4.y, pos4.z, Math.PI / 4);
+    sphere4.position.set(pos4.x, pos4.y, pos4.z);
+
+    // Sphere 5 (rotated around the z-axis)
+    let pos5 = {
+        x: radius * 0.9 * Math.cos(angle - Math.PI / 4),
+        y: radius * 0.9 * Math.sin(angle - Math.PI / 4),
+        z: 0
+    };
+    pos5 = rotateX(pos5.x, pos5.y, pos5.z, Math.PI / 4);
+    sphere5.position.set(pos5.x, pos5.y, pos5.z);
+}
+
+function createOrbitLines() {
+    const segments = 64; // Number of segments for the circular path
+    const radius = 20;
+
+    const path1 = createCircularPaths(radius, segments, { axis: new THREE.Vector3(1, 0, 0), angle: 0 });
+    const line1 = createDottedLine(path1);
+    scene.add(line1);
+
+    const path5 = createCircularPaths(radius * 0.85, segments, { axis: new THREE.Vector3(0, 0, 1), angle: Math.PI / 4 });
+    const line5 = createDottedLine(path5);
+    scene.add(line5);
+
+    const path4 = createCircularPaths(radius * 0.95, segments, { axis: new THREE.Vector3(0, 1, 0), angle: Math.PI / 4 });
+    const line4 = createDottedLine(path4);
+    scene.add(line4);
+
+    const path2 = createCircularPaths(radius * 0.9, segments, { axis: new THREE.Vector3(1, 0, 0), angle: Math.PI / 4 });
+    const line2 = createDottedLine(path2);
+    scene.add(line2);
+}
+
 function animate() {
     requestAnimationFrame(animate);
 
     TWEEN.update();  // Ensure TWEEN animations are updated
+    controls.update();
 
     const offset = -2
-
     if (selectedSphere) {
         camera.position.set(selectedSphere.position.x - offset, selectedSphere.position.y, selectedSphere.position.z + 5);
         controls.target.set(selectedSphere.position.x - offset, selectedSphere.position.y, selectedSphere.position.z);
@@ -291,97 +531,50 @@ function animate() {
         titleElement.style.display = 'none';
     }
 
-    // Rotate the spheres
-    sphere1.rotation.x += 0.01;
-    sphere1.rotation.y += 0.01;
-    sphere2.rotation.x += 0.01;
-    sphere2.rotation.y += 0.01;
-    sphere4.rotation.x += 0.01;
-    sphere4.rotation.y += 0.01;
-    sphere5.rotation.x += 0.01;
-    sphere5.rotation.y += 0.01;
+    const vector = new THREE.Vector3(mouseX, mouseY, 0.5).unproject(camera);
+    const raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
+    // Rotate the spheres
     sphere3.rotation.y += 0.01;
 
     // Update the angle for orbiting
-    angle += 0.01;
+    angle += 0.006;
 
-    // Calculate the new position of the sphere
-    const radius = 20;
-    sphere1.position.x = radius * Math.cos(angle);
-    sphere1.position.y = radius * 0.5 * Math.sin(angle);
-    sphere2.position.x = -radius * 0.5 * Math.cos(angle);
-    sphere2.position.y = -radius * Math.sin(angle);
+    updateSpheres(angle);
 
-    sphere4.position.x = radius * 0.75 * Math.cos(angle);
-    sphere4.position.y = radius * 0.75 * Math.sin(angle);
-    sphere5.position.x = -radius * 0.75 * Math.cos(angle);
-    sphere5.position.y = -radius * 0.5 * Math.sin(angle);
-
-    // Raycasting for hover detection
-    const vector = new THREE.Vector3(mouseX, mouseY, 0.5).unproject(camera);
-    const raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-    const intersect1 = raycaster.intersectObject(sphere1);
-    const intersect2 = raycaster.intersectObject(sphere2);
-    const intersect4 = raycaster.intersectObject(sphere4);
-    const intersect5 = raycaster.intersectObject(sphere5);
-
-    mouseOver1 = intersect1.length > 0;
-    mouseOver2 = intersect2.length > 0;
-    mouseOver4 = intersect4.length > 0;
-    mouseOver5 = intersect5.length > 0;
 
     // Position the title element
     const rect = renderer.domElement.getBoundingClientRect();
-    if(!selectedSphere){
-        sphere1.scale.set(mouseOver1 ? 1.5 : 1, mouseOver1 ? 1.5 : 1, mouseOver1 ? 1.5 : 1);
-        sphere2.scale.set(mouseOver2 ? 1.5 : 1, mouseOver2 ? 1.5 : 1, mouseOver2 ? 1.5 : 1);
-        sphere4.scale.set(mouseOver4 ? 1.5 : 1, mouseOver4 ? 1.5 : 1, mouseOver4 ? 1.5 : 1);
-        sphere5.scale.set(mouseOver5 ? 1.5 : 1, mouseOver5 ? 1.5 : 1, mouseOver5 ? 1.5 : 1);
-        if (mouseOver1) {
-            const sphere1ScreenPosition = sphere1.position.clone().project(camera);
-            const screenX = ((sphere1ScreenPosition.x + 1) / 2) * rect.width + rect.left;
-            const screenY = ((-sphere1ScreenPosition.y + 1) / 2) * rect.height + rect.top;
+    let isAnySphereHovered = false;
 
-            titleElement.style.display = 'block';
-            titleElement.innerHTML = 'Projects';
-            titleElement.style.left = `${screenX + 12}px`;
-            titleElement.style.top = `${screenY - 20}px`; // Adjusted position to be above the element
-            titleElement.style.color = `#0066ff`;
-        } else if (mouseOver2) {
-            const sphere2ScreenPosition = sphere2.position.clone().project(camera);
-            const screenX = ((sphere2ScreenPosition.x + 1) / 2) * rect.width + rect.left;
-            const screenY = ((-sphere2ScreenPosition.y + 1) / 2) * rect.height + rect.top;
+    spheres.forEach((sphere) => {
+        sphere.rotation.x += 0.01;
+        sphere.rotation.y += 0.01;
+        
+        if(!selectedSphere && !startscreen){
+            let intersect = raycaster.intersectObject(sphere);
+            let mouseOver = intersect.length > 0;
+            sphere.scale.set(mouseOver ? 1.5 : 1, mouseOver ? 1.5 : 1, mouseOver ? 1.5 : 1);
 
-            titleElement.style.display = 'block';
-            titleElement.innerHTML = 'About Me';
-            titleElement.style.left = `${screenX+12}px`;
-            titleElement.style.top = `${screenY - 20}px`; // Adjusted position to be above the element
-            titleElement.style.color = `#ff0000`;
-        } else if (mouseOver4) {
-            const sphere4ScreenPosition = sphere4.position.clone().project(camera);
-            const screenX = ((sphere4ScreenPosition.x + 1) / 2) * rect.width + rect.left;
-            const screenY = ((-sphere4ScreenPosition.y + 1) / 2) * rect.height + rect.top;
+            if (mouseOver) {
+                isAnySphereHovered = true;
+                const sphereScreenPosition = sphere.position.clone().project(camera);
+                const screenX = ((sphereScreenPosition.x + 1) / 2) * rect.width + rect.left;
+                const screenY = ((-sphereScreenPosition.y + 1) / 2) * rect.height + rect.top;
 
-            titleElement.style.display = 'block';
-            titleElement.innerHTML = 'Competitions';
-            titleElement.style.left = `${screenX+12}px`;
-            titleElement.style.top = `${screenY - 20}px`; // Adjusted position to be above the element
-            titleElement.style.color = `#ffb800`;
-        } else if (mouseOver5) {
-            const sphere5ScreenPosition = sphere5.position.clone().project(camera);
-            const screenX = ((sphere5ScreenPosition.x + 1) / 2) * rect.width + rect.left;
-            const screenY = ((-sphere5ScreenPosition.y + 1) / 2) * rect.height + rect.top;
-
-            titleElement.style.display = 'block';
-            titleElement.innerHTML = 'Contact';
-            titleElement.style.left = `${screenX+12}px`;
-            titleElement.style.top = `${screenY - 20}px`; // Adjusted position to be above the element
-            titleElement.style.color = `#ff5c00`;
-        } else {
-            titleElement.style.display = 'none';
+                titleElement.style.display = 'block';
+                titleElement.innerHTML = `${sphere.userData.name}`;
+                titleElement.style.left = `${screenX + 40}px`;
+                titleElement.style.top = `${screenY - 20}px`; // Adjusted position to be above the element
+                titleElement.style.color = `${colors[spheres.indexOf(sphere)]}`;
+            }
         }
+    });
+
+    if (!isAnySphereHovered) {
+        titleElement.style.display = 'none';
     }
+
     // Render the scene
     renderer.render(scene, camera);
 }

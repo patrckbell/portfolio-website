@@ -3,13 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.cdnfonts.com/css/general-sans?styles=135312" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/arcade-classic" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-
-    <title>Rotating Wireframe Spheres</title>
+    <title>Project Page</title>
+    <style>
+        body {
+            background-color: grey;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            height: 90%;
+            position: relative;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .back-button img {
+            width: 30px;
+            height: auto;
+        }
+        .project-info, .empty-space, .repo-section {
+            flex: 1;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .project-info {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        .project-info h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .project-info p {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+        .repo-section {
+            background-color: rgb(255, 255, 255);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+            margin: auto;
+            font-family: Arial, sans-serif;
+            height: 85vh;
+            width: 7vw;
+        }
+        .repo-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: rgb(96, 96, 96);
+        }
+        .repo-section .skills {
+            background-color: rgb(221, 221, 221);
+            padding: 10px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: white;
+            margin-bottom: 20px;
+            width: 95%;
+            height: 20%;
+        }
+        .repo-section .languages {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgb(221, 221, 221);
+            padding: 10px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            width: 95%;
+            height: 20%;
+        }
+        .repo-section .languages img {
+            width: 40px;
+            height: auto;
+        }
+        .repo-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            width: 95%;
+            height: 12%;
+        }
+        .repo-link:hover {
+            background-color: #0056b3;
+        }
+        #github {
+            width: 60%;
+            height: 60%;
+        }
+    </style>
 </head>
 <body>
-  <a href="index.html">Home</a>
+    <div class="container">
+        <button class="back-button" onclick="window.history.back();">
+            <img src="path/to/back-icon.png" alt="Back">
+        </button>
+        <div class="project-info">
+            <h1>PROJECT NAME</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        <div class="empty-space"></div>
+        <div class="repo-section">
+          <h2>Languages Used:</h2>
+          <div class="languages">
+              <img src="path/to/rust-logo.png" alt="Rust">
+              <img src="path/to/python-logo.png" alt="Python">
+              <img src="path/to/cpp-logo.png" alt="C++">
+          </div>
+          <h2>Skills Used:</h2>
+          <div class="skills">
+              Lorem ipsum, dolor sit, amet, consectetur adipiscing, elit sed, do eiusmod, tempor, incididunt ut, labore et dolore, magna aliqua, Ut enim, ad minim, veniam, quis nostrud, amet, consectetur adipiscing, elit sed
+          </div>
+          <a href="https://github.com/your-repo" class="repo-link">
+              <img id="github" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" style="width:20px;height:auto;margin-right:10px;">
+              REPO LINK
+          </a>
+      </div>
 </body>
 </html>

@@ -10,8 +10,54 @@
     <title>Rotating Wireframe Spheres</title>
 </head>
 <body>
+  <div class="gif-overlay">
+  <img id="vig" src="/vignette.png">
+  </div>
+
+  <div class="show" id="startscreen">
+    <div id="logostartcont">
+      <img src="logo.png" id="startlogo">
+    </div>
+    <div id='enter'>
+      <a id="enterbtn"><h1>ENTER</h1></a>
+    </div>
+    <video id="hyper" src="hyper.mp4" autoplay loop muted preload="true"></video> 
+  </div>
+
+  <div id="backarrow">
+    <img src="back.png">
+  </div>
+
+  <div id="about">
+    <div id="innerabout">
+    <h1>About Me</h1>
+      <p>
+        Hi, I’m Patrick Bellamy. I’m currently studying Mathematical Physics with a Diploma in Computing at the University of Melbourne. My journey started in Thailand, but I’ve lived in South Africa and Indonesia, which has given me a diverse perspective on life and a broader understanding of different cultures.
+        My fascination with math and computers goes way back. Alongside my academic work, I have a strong interest in finance and regularly participate in quantitative trading tournaments, where I get to test out various strategies and learn a lot in the process.
+        Outside of my studies and financial pursuits, I enjoy going to the gym, playing poker, and trying out new recipes in the kitchen. I also spend most of my time with the University of Melbourne’s rocketry team, which I am fortunate enough to be leading this year. We’re a group of over 100 students working on exciting and challenging projects related to rocketry.
+        My projects range from serious to lighthearted. I’ve used genetic algorithms to find the best subway sandwich, built machine learning models to predict sports betting odds, and even worked on coding systems for rocket airbrakes. Here, I share a bit about these projects and the competitions I’m involved in. I hope you find them interesting and insightful.
+      </p>
+        <a href="PatrickBellamyResume.pdf" download="PatrickBellamyResume"><button id="resumebtn">My Resume</button></a>
+    </div>
+  </div>
+
+  <div id="socialcontainer">
+    <div class="buttons">
+        <a id="github" href="https://github.com/patrckbell" class="button" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+        </a>
+        <a id="x" href="https://twitter.com/patrckbell" class="button" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/X_icon.svg" alt="Twitter">
+        </a>
+        <a id="linkedin" href="https://linkedin.com/in/patrick-bellamy" class="button" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Linkedin_circle_black-512.png" alt="LinkedIn">
+        </a>
+    </div>
+  </div>
+
   <div id="title"></div>
   <div id="info"></div>
+
   <script type="module" src="main.js"></script>
 </body>
 </html>
