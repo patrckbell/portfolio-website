@@ -322,11 +322,47 @@ p {
     font-size: 20px;
     padding: 100px;
 }
-footer{
-    padding: 80px;
-    display: block;
-    background-color: white;
-}
+.footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #000;
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-links a {
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .footer-links a.home {
+            color: black;
+        }
+        .footer-links a.projects {
+            color: blue;
+        }
+        .footer-links a.competitions {
+            color: orange;
+        }
+        .footer-links a.about {
+            color: red;
+        }
+        .footer-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .footer-icons a {
+            text-decoration: none;
+            font-size: 0;
+        }
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+        }
 #backarrow{
   z-index: 1000;
   position: absolute;
