@@ -3828,7 +3828,7 @@ void main() {
                 <button id="prevBtn">Previous</button>
                 <button id="nextBtn">Next</button>
                 <button id="sac">Spaceport America Cup</button>
-                <button id="citadel">Citadel Trading Invitational</button>
+                <button id="citadel">Citadel Invitational</button>
                 <button id="imc">IMC Prosperity</button>`,document.getElementById("sac").addEventListener("click",function(){window.location.href="pages/comingsoon.html"}),document.getElementById("citadel").addEventListener("click",function(){window.location.href="pages/tradinginv.html"}),document.getElementById("imc").addEventListener("click",function(){window.location.href="pages/imcprosp.html"})):(Ee.innerHTML=`
                 <h2>${a.name}</h2>
                 <p>${a.info}</p>
@@ -3850,7 +3850,7 @@ void main() {
         <button id="prevBtn">Previous</button>
         <button id="nextBtn">Next</button>
         <button id="sac">Spaceport America Cup</button>
-        <button id="citadel">Citadel Trading Invitational</button>
+        <button id="citadel">Citadel Invitational</button>
         <button id="imc">IMC Prosperity</button>`,document.getElementById("sac").addEventListener("click",function(){window.location.href="pages/comingsoon.html"}),document.getElementById("citadel").addEventListener("click",function(){window.location.href="pages/tradinginv.html"}),document.getElementById("imc").addEventListener("click",function(){window.location.href="pages/imcprosp.html"})):(Ee.innerHTML=`
         <h2>${e.name}</h2>
         <p>${e.info}</p>
