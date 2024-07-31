@@ -162,9 +162,11 @@ In conclusion, working on Project Florence with the ARES Rocketry Team was an un
 #container {
     position: relative;
     top: 0;
-    contain: content;
+    width: 100%;
+    height: auto;
     display: grid;
     grid-template-rows: 1fr 1fr;
+    overflow-y: auto;
 }
 
 #info, #repo {
@@ -221,7 +223,7 @@ In conclusion, working on Project Florence with the ARES Rocketry Team was an un
     top: 0;
     left: 0;
     width: 100%;
-    height: inherit;
+    height: 100%;
     z-index: -1;
 }
 
@@ -321,7 +323,6 @@ p {
     font-size: 20px;
     padding: 100px;
     min-width: 80vw;
-    left: 0;
 }
 .footer {
             display: flex;
