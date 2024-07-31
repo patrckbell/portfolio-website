@@ -125,273 +125,542 @@
     <script src="script.js"></script>
 </body>
 <style>
-    body, html {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    font-family: Arial, sans-serif;
-}
-
-#container {
-    position: relative;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 6fr 4fr 6fr 1fr;
-}
-
-#info, #repo {
-    position: relative;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    overflow: hidden;
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; 
-}
-#info {
-    grid-column: 2;
-    display: grid;
-    grid-template-rows: 1fr 1fr 4fr 1fr;
-}
-#info h1{
-    grid-row: 2;
-    position: sticky;
-    bottom: 0px;
-}
-
-#repo {
-    grid-column: 4;
-    grid-template-rows: 1fr 5fr 1fr;
-}
-
-#infobox, #repobox{
-    border-radius: 20px;
-}
-#infobox{
-    height: 90%;
-    width: 80%;
-    padding: 15px 20px 20px 15px;
-
-    background-color: rgba(48, 48, 48, 0.457);
-    grid-row: 3;
-
-}
-#repobox{
-    padding: 15px 20px 20px 15px;
-
-    width: 80%;
-    background-color: white;
-    color: black;
-    grid-row: 2;
-    height: 83%;
-}
-
-#threejs-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-#repo-link {
-    display: flex;
-    background: blue;
-    color: black;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 20px;
-    margin-top: 10px;
-    height: 15%;
-    font-family: 'ArcadeClassic', sans-serif;
-    font-size: 50px;
-    align-items: center;
-}
-#repo-link:hover{
-    transition: 0.2s;
-    background-color: #0040a1;
-}
-#repo-link p{
-    display: flex;
-    align-self: center;
-    text-align: center;
-}
-
-h1 {
-    margin: 0 0 10px;
-    font-family: 'ArcadeClassic', sans-serif;
-    font-size: 80px;
-    position: fixed;
-    top: 20px;
-}
-h2{
-    margin: 0 0 10px;
-    font-family: 'ArcadeClassic', sans-serif;
-    font-size: 40px; 
-}
-
-p {
-    margin: 0 0 20px;
-    font-size: 20px;
-    font-family: 'General Sans', sans-serif;
-}
-
-#languages{
-    text-align: left;
-    background-color: rgb(199, 199, 199);
-    height: 27%;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-#languages.imgs{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-#languages img {
-    justify-self: center;
-    align-self: center;
-    width: 70%;
-    height: auto;
-    margin-right: 10px;
-}
-
-#spacer{
-    height: 2%;
-}
-.gif-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('../overlay.gif') no-repeat center center;
-  background-size: cover;
-  pointer-events: none; /* Allow clicks to pass through the GIF */
-  z-index: 20000; /* Ensure GIF is above content */
-  opacity: 0.15;
-  mix-blend-mode:color;
-}
-
-#vig{
-    position: fixed;
-  pointer-events: none; 
-  opacity: 0.9;
-  width: 100%;
-  height: 100%;
-}
-
-#meatandpotatoes{
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    color: white;
-    background-color: black;
-}
-
-#yaps {
-    grid-column: 2;
-    font-family: 'General Sans', sans-serif;
-    font-size: 20px;
-    padding: 100px;
-}
-.footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #fff;
-            border-top: 1px solid #000;
-        }
-        .footer-links {
-            display: flex;
-            gap: 22px;
-        }
-        .footer-links a {
-            text-decoration: none;
-            font-size: 22px;
-            font-weight: bold;
-            font-family: 'ArcadeClassic', sans-serif;
-        }
-        .footer-links a.home {
-            color: black;
-        }
-        .footer-links a.projects {
-            color: blue;
-        }
-        .footer-links a.competitions {
-            color: orange;
-        }
-        .footer-links a.about {
-            color: red;
-        }
-        .footer-icons {
-            display: flex;
-            gap: 15px;
-        }
-        .footer-icons a {
-            text-decoration: none;
-            font-size: 0;
-        }
-        .footer-icons img {
-            width: 36px;
-            height: 36px;
-        }
-#backarrow{
-  z-index: 1000;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 50px;
-  transition: 0.2s;
-}
-#backarrow:hover{
-  transition: 0.2s;
-  opacity: 0.7;
-}
-
-#backarrow img{
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 50px;
-}
-
-.scroll-image{
-    height: 1%;
-    grid-column: 1;
-}
-
-.left-images {
-    position: absolute;
-    left: 150px;
-    top: 0;
-    bottom: 0;
-    width: 380px; /* Adjust width as needed */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px; /* Adjust padding as needed */
-}
-
-.left-images img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: 10px; /* Adjust spacing between images */
-}
-
-.left-images img:last-child {
-    margin-bottom: 0; /* Remove margin from the last image */
-}
-
-</style>
-<script>
-</script>
-</html>
+    @media only screen and (max-width: 768px) {
+        body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+    }
+    
+    #container {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        overflow-y: auto;
+    }
+    
+    #info, #repo {
+        position: relative;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        overflow: hidden;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; 
+    }
+    #info {
+        grid-row: 1;
+        grid-template-rows: 1fr 1fr 4fr 1fr;
+        display: grid;
+        
+    }
+    #info h1{
+        grid-row: 2;
+        bottom: 0px;
+    }
+    
+    #repo {
+        grid-row: 2;
+        grid-template-rows: 1fr 5fr 1fr;
+    }
+    
+    #infobox, #repobox{
+        border-radius: 20px;
+    }
+    #infobox{
+        height: 90%;
+        width: 70%;
+        padding: 15px 20px 20px 15px;
+    
+        background-color: rgba(48, 48, 48, 0.457);
+        text-align: left;
+        grid-row: 3;
+    
+    }
+    #repobox{
+        padding: 15px 20px 20px 15px;
+    
+        width: 80%;
+        background-color: white;
+        color: black;
+        grid-row: 2;
+        height: 90%;
+    }
+    
+    #threejs-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    
+    #repo-link {
+        display: flex;
+        background: blue;
+        color: black;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 20px;
+        margin-top: 10px;
+        height: 15%;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 50px;
+        align-items: center;
+    }
+    #repo-link:hover{
+        transition: 0.2s;
+        background-color: #0040a1;
+    }
+    
+    h1 {
+        margin: 0 0 10px;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 70px;
+        position: fixed;
+        top: 20px;
+    }
+    h2{
+        margin: 0 0 10px;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 35px; 
+    }
+    
+    p {
+        margin: 0 0 20px;
+        font-size: 20px;
+        font-family: 'General Sans', sans-serif;
+    }
+    
+    #languages{
+        background-color: rgb(199, 199, 199);
+        height: 27%;
+        border-radius: 20px;
+        padding: 10px;
+        overflow-y: auto;
+    }
+    
+    #languages.imgs{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    #languages img {
+        justify-self: center;
+        align-self: center;
+        width: 70%;
+        height: auto;
+        margin-right: 10px;
+    }
+    
+    #spacer{
+        height: 2%;
+    }
+    .gif-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('../overlay.gif') no-repeat center center;
+      background-size: cover;
+      pointer-events: none; /* Allow clicks to pass through the GIF */
+      z-index: 20000; /* Ensure GIF is above content */
+      opacity: 0.15;
+      mix-blend-mode:color;
+    }
+    
+    #vig{
+        position: fixed;
+      pointer-events: none; 
+      opacity: 0.9;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #meatandpotatoes{
+        position: relative;
+        display: grid;
+        color: white;
+        background-color: black;
+        align-items: center;
+        text-align: center;
+    }
+    
+    #yaps {
+        display: flex;
+        font-family: 'General Sans', sans-serif;
+        font-size: 20px;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        min-width: 80vw;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: left;
+    }
+    .footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                background-color: #fff;
+                border-top: 1px solid #000;
+            }
+            .footer-links {
+                display: flex;
+                gap: 22px;
+            }
+            .footer-links a {
+                text-decoration: none;
+                font-size: 22px;
+                font-weight: bold;
+                font-family: 'ArcadeClassic', sans-serif;
+            }
+            .footer-links a.home {
+                color: black;
+            }
+            .footer-links a.projects {
+                color: blue;
+            }
+            .footer-links a.competitions {
+                color: orange;
+            }
+            .footer-links a.about {
+                color: red;
+            }
+            .footer-icons {
+                display: flex;
+                gap: 15px;
+            }
+            .footer-icons a {
+                text-decoration: none;
+                font-size: 0;
+            }
+            .footer-icons img {
+                width: 36px;
+                height: 36px;
+            }
+    #backarrow{
+      z-index: 1000;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 50px;
+      transition: 0.2s;
+    }
+    #backarrow:hover{
+      transition: 0.2s;
+      opacity: 0.7;
+    }
+    
+    #backarrow img{
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 50px;
+    }
+    
+    .scroll-image{
+        height: 1%;
+    }
+    
+    .left-images {
+        position: absolute;
+        left: 150px;
+        top: 0;
+        bottom: 0;
+        width: 380px; /* Adjust width as needed */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px; /* Adjust padding as needed */
+        visibility: hidden;
+    }
+    
+    .left-images img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px; /* Adjust spacing between images */
+    }
+    
+    .left-images img:last-child {
+        margin-bottom: 0; /* Remove margin from the last image */
+    }
+    }
+    @media only screen and (min-width: 769px) {
+        body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+    }
+    
+    #container {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 6fr 4fr 6fr 1fr;
+    }
+    
+    #info, #repo {
+        position: relative;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        overflow: hidden;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; 
+    }
+    #info {
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: 1fr 1fr 4fr 1fr;
+        
+    }
+    #info h1{
+        grid-row: 2;
+        position: sticky;
+        bottom: 0px;
+    }
+    
+    #repo {
+        grid-column: 4;
+        grid-template-rows: 1fr 5fr 1fr;
+    }
+    
+    #infobox, #repobox{
+        border-radius: 20px;
+    }
+    #infobox{
+        height: 90%;
+        width: 70%;
+        padding: 15px 20px 20px 15px;
+    
+        background-color: rgba(48, 48, 48, 0.457);
+        text-align: left;
+        grid-row: 3;
+    
+    }
+    #repobox{
+        padding: 15px 20px 20px 15px;
+    
+        width: 80%;
+        background-color: white;
+        color: black;
+        grid-row: 2;
+        height: 83%;
+    }
+    
+    #threejs-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    
+    #repo-link {
+        display: flex;
+        background: blue;
+        color: black;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 20px;
+        margin-top: 10px;
+        height: 15%;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 50px;
+        align-items: center;
+    }
+    #repo-link:hover{
+        transition: 0.2s;
+        background-color: #0040a1;
+    }
+    
+    h1 {
+        margin: 0 0 10px;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 60px;
+        position: fixed;
+        top: 20px;
+    }
+    h2{
+        margin: 0 0 10px;
+        font-family: 'ArcadeClassic', sans-serif;
+        font-size: 35px; 
+    }
+    
+    p {
+        margin: 0 0 20px;
+        font-size: 20px;
+        font-family: 'General Sans', sans-serif;
+    }
+    
+    #languages{
+        background-color: rgb(199, 199, 199);
+        height: 27%;
+        border-radius: 20px;
+        padding: 10px;
+        overflow-y: auto;
+    }
+    
+    #languages.imgs{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    #languages img {
+        justify-self: center;
+        align-self: center;
+        width: 70%;
+        height: auto;
+        margin-right: 10px;
+    }
+    
+    #spacer{
+        height: 2%;
+    }
+    .gif-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('../overlay.gif') no-repeat center center;
+      background-size: cover;
+      pointer-events: none; /* Allow clicks to pass through the GIF */
+      z-index: 20000; /* Ensure GIF is above content */
+      opacity: 0.15;
+      mix-blend-mode:color;
+    }
+    
+    #vig{
+        position: fixed;
+      pointer-events: none; 
+      opacity: 0.9;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #meatandpotatoes{
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        color: white;
+        background-color: black;
+    }
+    
+    #yaps {
+        grid-column: 2;
+        font-family: 'General Sans', sans-serif;
+        font-size: 20px;
+        padding: 100px;
+    }
+    .footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                background-color: #fff;
+                border-top: 1px solid #000;
+            }
+            .footer-links {
+                display: flex;
+                gap: 22px;
+            }
+            .footer-links a {
+                text-decoration: none;
+                font-size: 22px;
+                font-weight: bold;
+                font-family: 'ArcadeClassic', sans-serif;
+            }
+            .footer-links a.home {
+                color: black;
+            }
+            .footer-links a.projects {
+                color: blue;
+            }
+            .footer-links a.competitions {
+                color: orange;
+            }
+            .footer-links a.about {
+                color: red;
+            }
+            .footer-icons {
+                display: flex;
+                gap: 15px;
+            }
+            .footer-icons a {
+                text-decoration: none;
+                font-size: 0;
+            }
+            .footer-icons img {
+                width: 36px;
+                height: 36px;
+            }
+    #backarrow{
+      z-index: 1000;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 50px;
+      transition: 0.2s;
+    }
+    #backarrow:hover{
+      transition: 0.2s;
+      opacity: 0.7;
+    }
+    
+    #backarrow img{
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 50px;
+    }
+    
+    .scroll-image{
+        height: 1%;
+        grid-column: 1;
+    }
+    
+    .left-images {
+        position: absolute;
+        left: 150px;
+        top: 0;
+        bottom: 0;
+        width: 380px; /* Adjust width as needed */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px; /* Adjust padding as needed */
+    }
+    
+    .left-images img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px; /* Adjust spacing between images */
+    }
+    
+    .left-images img:last-child {
+        margin-bottom: 0; /* Remove margin from the last image */
+    }
+    }
+    </style>
+    <script>
+    </script>
+    </html>
+    
